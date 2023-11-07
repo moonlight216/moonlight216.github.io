@@ -1,22 +1,27 @@
-import data from './data/stations.json' assert {type: 'json'}
-
+import stations from './data/stations.json' assert {type: 'json'}
+import lines from './data/lines.geojson' assert {type: 'json'}
 var map = L.map('map_container').setView([39.5, 116.3], 13)
 
 var baseLayer = L.tileLayer(
-    'http://rt0.map.gtimg.com/realtimerender?z={z}&x={x}&y={-y}&type=vector&style=0', {
+    'https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
     attribution: '@osm',
-    minZoom: 10,
-    maxZoom: 14,
+    minZoom: 9,
+    maxZoom: 18,
     preferCanvas: true
 }
 ).addTo(map)
 
-
+L.geoJSON(lines, {
+    style: {
+        "color": "green",
+        "weight": 3,
+        "opacity": 0.5
+    }
+}).addTo(map);
 
 // TODO:批量添加markers
 
 var pLayer = new PruneClusterForLeaflet();
-var markers = []
 
 var icon = L.icon({
     iconUrl: 'data/markers.png',
@@ -24,16 +29,22 @@ var icon = L.icon({
     iconAnchor: [10, 9]
 });
 
-for (var i = 0; i < data.length; i++) {
-    pLayer.RegisterMarker(new PruneCluster.Marker(data[i].Y, data[i].X, {
-        title: 1,
-        singleMarkerMode:true,
-        popup:
-     }));  
+function round(num) {
+    return Math.round(num * 100) / 100.
+}
+
+for (var i = 0; i < stations.length; i++) {
+    var x = stations[i].X
+    var y = stations[i].Y
+    var name = stations[i].StationNam
+    pLayer.RegisterMarker(new PruneCluster.Marker(y, x, {
+        singleMarkerMode: true,
+        popup: "站名: " + name + "<br/>" + "经度: " + round(x) + "<br/>" + "纬度: " + round(y)
+    }));
 }
 
 map.addLayer(pLayer);
-pruneClusterView .ProcessView();
+pLayer.ProcessView();
 
 
 
