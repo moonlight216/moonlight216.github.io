@@ -2,7 +2,7 @@ import stations from './data/stations.json' assert {type: 'json'}
 import lines from './data/lines.geojson' assert {type: 'json'}
 var map = L.map('map_container').setView([39.5, 116.3], 13)
 
-var baseLayer = L.tileLayer(
+L.tileLayer(
     'https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
     attribution: '@osm',
     minZoom: 9,
@@ -11,13 +11,24 @@ var baseLayer = L.tileLayer(
 }
 ).addTo(map)
 
-L.geoJSON(lines, {
+var geoLayer = L.geoJSON(lines, {
     style: {
         "color": "green",
         "weight": 3,
         "opacity": 0.5
     }
-}).addTo(map);
+})
+
+//设定当zoom>=15时，再加载lines图层
+map.on('zoomend', () => {
+    if (map.getZoom() >= 14) {
+        map.addLayer(geoLayer)
+    } else {
+        if (map.hasLayer(geoLayer)) {
+            map.removeLayer(geoLayer)
+        }
+    }
+})
 
 // TODO:批量添加markers
 
