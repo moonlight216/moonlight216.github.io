@@ -3,7 +3,7 @@ import lines from './data/lines.geojson' assert {type: 'json'}
 var map = L.map('map_container').setView([39.5, 116.3], 13)
 
 L.tileLayer(
-    'https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
+    'http://t2.tianditu.gov.cn/vec_w/wmts?SERVICE=WMTS&REQUEST=GetTile&VERSION=1.0.0&LAYER=vec&STYLE=default&TILEMATRIXSET=w&FORMAT=tiles&TILEMATRIX={z}&TILEROW={y}&TILECOL={x}&tk=0d84cf377db65d8f1af3b5f808876abe', {
     attribution: '@osm',
     minZoom: 9,
     maxZoom: 18,
@@ -15,18 +15,18 @@ var geoLayer = L.geoJSON(lines, {
     style: {
         "color": "green",
         "weight": 3,
-        "opacity": 0.5
+        "opacity": 0
     }
 })
 
-//设定当zoom>=15时，再加载lines图层
+var layerGroup = L.layerGroup([geoLayer]).addTo(map)
+
+//设定当zoom>=14时，再加载lines图层
 map.on('zoomend', () => {
     if (map.getZoom() >= 14) {
-        map.addLayer(geoLayer)
+        layerGroup.showLayer()
     } else {
-        if (map.hasLayer(geoLayer)) {
-            map.removeLayer(geoLayer)
-        }
+        layerGroup.hideLayer()
     }
 })
 
@@ -61,3 +61,7 @@ pLayer.ProcessView();
 
 
 // TODO:图层切换
+
+//天地图:http://t2.tianditu.gov.cn/vec_w/wmts?SERVICE=WMTS&REQUEST=GetTile&VERSION=1.0.0&LAYER=vec&STYLE=default&TILEMATRIXSET=w&FORMAT=tiles&TILEMATRIX={z}&TILEROW={y}&TILECOL={x}&tk=0d84cf377db65d8f1af3b5f808876abe
+//OSM:https://tile.openstreetmap.org/{z}/{x}/{y}.png
+//Arcgis地形图:https://server.arcgisonline.com/arcgis/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}
