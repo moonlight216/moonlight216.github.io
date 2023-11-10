@@ -1,18 +1,51 @@
+* {
+    margin: 0;
+    padding: 0;
+}
+
 html,
 body {
     width: 100%;
     height: 100%;
 }
 
-body {
-    padding: 0px;
-    margin: 0px;
-}
-
 .aside {
     width: 20%;
     height: 100%;
     float: left;
+    overflow-y: auto
+}
+
+.submenu_header {
+    padding: 0 16px;
+    background-color: rgb(197, 189, 137);
+    user-select: none;
+    height: 70px;
+    line-height: 70px;
+}
+
+.submenu>ul {
+    display: none;
+}
+
+.submenu_header span {
+    font-size: 16px;
+}
+
+.submenu_header:hover {
+    background-color: rgb(108, 135, 174);
+}
+
+.item:hover {
+    background-color: rgb(164, 164, 164);
+}
+
+.item {
+    list-style-type: none;
+    margin-left: 20px;
+    margin-bottom: 10px;
+    user-select: none;
+    color: rgb(0, 0, 0);
 }
 
 .view {

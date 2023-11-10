@@ -1,17 +1,44 @@
 @font-face {
   font-family: "iconfont"; /* Project id 4325375 */
-  src: url('//at.alicdn.com/t/c/font_4325375_0639qm1vzng2.woff2?t=1699610988730') format('woff2'),
-       url('//at.alicdn.com/t/c/font_4325375_0639qm1vzng2.woff?t=1699610988730') format('woff'),
-       url('//at.alicdn.com/t/c/font_4325375_0639qm1vzng2.ttf?t=1699610988730') format('truetype');
+  src: url('//at.alicdn.com/t/c/font_4325375_dkm22lu1nsb.woff2?t=1699638611166') format('woff2'),
+       url('//at.alicdn.com/t/c/font_4325375_dkm22lu1nsb.woff?t=1699638611166') format('woff'),
+       url('//at.alicdn.com/t/c/font_4325375_dkm22lu1nsb.ttf?t=1699638611166') format('truetype');
 }
 
 .iconfont {
   font-family: "iconfont" !important;
   font-size: 15px;
   font-style: normal;
-  vertical-align: middle;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+}
+
+.icon-gengduo1:before {
+  content: "\e680";
+}
+
+.icon-Halloween-:before {
+  content: "\e60b";
+}
+
+.icon-qita:before {
+  content: "\e646";
+}
+
+.icon-jianzhu:before {
+  content: "\e65b";
+}
+
+.icon-house:before {
+  content: "\e601";
+}
+
+.icon-gongyuan:before {
+  content: "\e994";
+}
+
+.icon-tower-of-pisa:before {
+  content: "\e652";
 }
 
 .icon-ziyuanxhdpi:before {
@@ -37,3 +64,4 @@
 .icon-Union-4:before {
   content: "\e608";
 }
+

@@ -1,10 +1,6 @@
 import data from './data/proj.json' assert {type: 'json'}
 
-// TODO:根据TYPE类型分类添加到itemlist中
-data.forEach(e => {
-    
-})
-
+// TODO；初始化地图
 var map = L.map('map_container', {
     zoomControl: false
 }).setView([34.5, 119.0], 4)
@@ -19,6 +15,56 @@ L.tileLayer(
     preferCanvas: true
 }
 ).addTo(map)
+
+
+// TODO:根据TYPE类型分类添加到itemlist中
+function addLi(ul_id, elmnt) {
+    var li = document.createElement('li')
+    li.className = "item"
+    function round(x) {
+        return Math.round(x * 100) / 100.
+    }
+    li.innerHTML = "名称:" + elmnt.NAME + "<br/>" + "位置:" + round(elmnt.LAT) + "°N," + round(elmnt.LON) + "°E"
+    document.getElementById(ul_id).appendChild(li)
+    li.onclick = () => {
+        map.setView([elmnt.LAT, elmnt.LON], 16)
+        //map.flyTo([elmnt.LAT, elmnt.LON], 16, { duration: 1 })
+        markers.get(elmnt.FID).openPopup()
+    }
+}
+
+// TODO:间隔地给li上色
+
+data.forEach(e => {
+    const type = e.TYPE
+    switch (type) {
+        case "古建筑":
+            addLi('gujianzhu', e)
+            break
+        case "古墓葬":
+            addLi('gumuzang', e)
+            break
+        case "古遗址":
+            addLi('guyizhi', e)
+            break
+        case "近现代重要史迹及代表性建筑":
+            addLi('jindai', e)
+            break
+        case "石窟寺及石刻":
+            addLi('shike', e)
+            break
+        case "其他":
+            addLi('qita', e)
+            break
+    }
+})
+
+// TODO: 伸缩ul
+$(function () {
+    $('.submenu_header').click(function () {
+        $(this).next().slideToggle().siblings('ul').slideUp(100);
+    })
+})
 
 // TODO：div-toolbar可拖动
 var toolbar = document.getElementById(("toolbar"))
@@ -63,7 +109,7 @@ function dragElement(elmnt) {
 
 var marksLayer = L.markerClusterGroup()
 
-var markers = []
+const markers = new Map()
 
 var icon = L.icon({
     iconUrl: 'image/markers.png',
@@ -78,7 +124,7 @@ data.forEach(item => {
         }).bindPopup(item.NAME)
 
     marksLayer.addLayer(marker)
-    markers.push(marker)
+    markers.set(item.FID, marker)
 })
 
 map.addLayer(marksLayer)
