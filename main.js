@@ -19,11 +19,11 @@ L.tileLayer(
 function round(x) {
     return Math.round(x * 100) / 100.
 }
-// TODO:根据TYPE类型分类添加到itemlist中,
+// TODO:根据TYPE类型分类添加到itemlist中
 function addLi(ul_id, elmnt) {
     var li = document.createElement('li')
     li.className = "item"
-    li.id = "item_"+elmnt.FID
+    li.id = "item_" + elmnt.FID
     li.innerHTML = "<b>名称：</b>" + elmnt.NAME + "<br/>" +
         "<b>地址：</b>" + elmnt.ADDRESS + "<br/>" + " <b>经纬度：</b>" + round(elmnt.LAT) + "°N," + round(elmnt.LON) + "°E"
     document.getElementById(ul_id).appendChild(li)
@@ -36,8 +36,8 @@ function addLi(ul_id, elmnt) {
 
 // TODO:间隔地给li上色
 
-function colordif(p,elmnt){
-    var item = document.getElementById("item_"+elmnt.FID)
+function colordif(p, elmnt) {
+    var item = document.getElementById("item_" + elmnt.FID)
     if (p % 2 == 0) {
         item.style.backgroundColor = "#e7e7e7"
         item.onmouseover = () => {
@@ -49,45 +49,92 @@ function colordif(p,elmnt){
     }
     return ++p
 }
-var p=[0,0,0,0,0,0]
+var p = [0, 0, 0, 0, 0, 0]
+// TODO：过滤按钮
+var buttonfilter = document.getElementById('buttonfilter')
+buttonfilter.onclick = () => {
+    const filterConditions = {
+        PROJ: $("#s_proj option:selected").val(),
+        BATCH: $("#s_batch option:selected").val()
+    };
 
-// TODO：分类
-data.forEach(e => {
-    const type = e.TYPE
-    switch (type) {
-        case "古建筑":
-            addLi('gujianzhu', e)
-            p[0] = colordif(p[0],e)
-            break
-        case "古墓葬":
-            addLi('gumuzang', e)
-            p[1] = colordif(p[1],e)
-            break
-        case "古遗址":
-            addLi('guyizhi', e)
-            p[2] = colordif(p[2],e)
-            break
-        case "近现代重要史迹及代表性建筑":
-            addLi('jindai', e)
-            p[3] = colordif(p[3],e)
-            break
-        case "石窟寺及石刻":
-            addLi('shike', e)
-            p[4] = colordif(p[4],e)
-            break
-        case "其他":
-            addLi('qita', e)
-            p[5] = colordif(p[5],e)
-            break
+    const filteredData = data.filter(item => {
+        return Object.entries(filterConditions).every(([key, value]) => {
+            if (value === '*') {
+                return true;
+            }
+            return item[key] === value;
+        });
+    });
+
+    var subuls = document.getElementsByClassName("subul")
+    for (var i = 0; i < subuls.length; i++) {
+        var subul = subuls[i]
+        while (subul.firstChild) {
+            subul.removeChild(subul.firstChild)
+        }
+    }
+
+
+    // TODO：分类
+    filteredData.forEach(e => {
+        const type = e.TYPE
+        switch (type) {
+            case "古建筑":
+                addLi('gujianzhu', e)
+                p[0] = colordif(p[0], e)
+                break
+            case "古墓葬":
+                addLi('gumuzang', e)
+                p[1] = colordif(p[1], e)
+                break
+            case "古遗址":
+                addLi('guyizhi', e)
+                p[2] = colordif(p[2], e)
+                break
+            case "近现代重要史迹及代表性建筑":
+                addLi('jindai', e)
+                p[3] = colordif(p[3], e)
+                break
+            case "石窟寺及石刻":
+                addLi('shike', e)
+                p[4] = colordif(p[4], e)
+                break
+            case "其他":
+                addLi('qita', e)
+                p[5] = colordif(p[5], e)
+                break
+        }
+    })
+}
+// TODO: 添加数据到filter内
+
+//省份PROJ
+var s_proj = document.getElementById("s_proj");
+var projSet = new Set();
+data.forEach(item => {
+    var projValue = item.PROJ;
+
+    // 确保不重复添加
+    if (!projSet.has(projValue)) {
+        projSet.add(projValue);
+
+        var option = document.createElement("option");
+        option.text = projValue;
+        option.value = projValue;
+
+        s_proj.add(option);
     }
 })
 
 // TODO: 伸缩ul,添加选中颜色
 $(function () {
     $('.submenu_header').click(function () {
-        $(".submenu_header_active").attr('class','submenu_header')
-        $(this).attr('class','submenu_header_active')
-        $(this).next().slideToggle().siblings('ul').slideUp(100);
+        $(".submenu_header_active").attr('class', 'submenu_header')
+        $(this).attr('class', 'submenu_header_active')
+        //ul之间伸缩交替
+        $('.subul').not($(this).siblings('.subul')).slideUp();
+        $(this).siblings('.subul').slideToggle();
     })
 })
 

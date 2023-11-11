@@ -10,39 +10,59 @@ body {
 }
 
 .aside {
+    display: block;
     left: 20px;
     top: 20px;
     opacity: 0.95;
     z-index: 1;
     position: absolute;
     width: 30%;
-    max-height: 70%;
-    float: left;
     border-radius: 15px;
-    overflow-y: scroll;
+    overflow-y: hidden;
 }
 
 .submenu_header {
     padding: 0 16px;
     background-color: rgb(244, 244, 244);
     user-select: none;
-    height: 70px;
-    line-height: 70px;
+    height: 60px;
+    line-height: 60px;
 }
+
 /*滚动方式*/
+.submenu {
+    max-height: 400px;
+}
+
 .subul {
     max-height: 300px;
     overflow-y: scroll;
 }
-::-webkit-scrollbar {
-    display: none;
+
+.itemlist {
+    max-height: 10%;
 }
+
+/*滚动条样式*/
+*::-webkit-scrollbar {
+    width: 10px;
+}
+
+*::-webkit-scrollbar-thumb {
+    background: #ccc;
+    border-radius: 5px;
+}
+
+*::-webkit-scrollbar-track {
+    background-color: #ffffff;
+}
+
 .submenu_header_active {
     padding: 0 16px;
     background-color: rgb(178, 204, 240);
     user-select: none;
-    height: 70px;
-    line-height: 70px;
+    height: 60px;
+    line-height: 60px;
 }
 
 .submenu>ul {
@@ -103,4 +123,35 @@ body {
     height: 35px;
     width: 35px;
     border-radius: 50%;
+}
+
+.filter {
+    padding: 1em;
+    display: block;
+    line-height: 50px;
+    background-color: rgb(246, 186, 184);
+    user-select: none;
+}
+
+
+#buttonfilter {
+    background-color: rgb(255, 255, 255);
+    border: none;
+    color: rgb(0, 0, 0);
+    cursor: pointer;
+    height: 35px;
+    width: 35px;
+    border-radius: 50%;
+}
+
+.select {
+    width: 22%;
+    background: transparent;
+    border: 1px solid #000000;
+    line-height: 20px;
+    height: 20px;
+    box-sizing: border-box;
+    font-size: 15px;
+    border-radius: 4px;
+    color: #000000;
 }
