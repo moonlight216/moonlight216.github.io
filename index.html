@@ -22,63 +22,7 @@
 </head>
 
 <body>
-    <div class="aside">
-        <div id="itemlist">
-            <ul style="list-style: none;">
-                <li class="submenu">
-                    <div class="submenu_header">
-                        <i class="iconfont icon-jianzhu"></i>
-                        <span>古建筑</span>
-                        <i class="iconfont icon-gengduo1" style="float: right;"></i>
-                    </div>
-                    <ul id="gujianzhu"></ul>
-                </li>
-                <li class="submenu">
-                    <div class="submenu_header">
-                        <i class="iconfont icon-Halloween-"></i>
-                        <span>古墓葬</span>
-                        <i class="iconfont icon-gengduo1" style="float: right;"></i>
-                    </div>
-                    <ul id="gumuzang"></ul>
-                </li>
-                <li class="submenu">
-                    <div class="submenu_header">
-                        <i class="iconfont icon-gongyuan"></i>
-                        <span>古遗址</span>
-                        <i class="iconfont icon-gengduo1" style="float: right;"></i>
-                    </div>
-                    <ul id="guyizhi"></ul>
-                </li>
-                <li class="submenu">
-                    <div class="submenu_header">
-                        <i class="iconfont icon-tower-of-pisa"></i>
-                        <span>近现代重要史迹及代表性建筑</span>
-                        <i class="iconfont icon-gengduo1" style="float: right;"></i>
-                    </div>
-                    <ul id="jindai"></ul>
-                </li>
-                <li class="submenu">
-                    <div class="submenu_header">
-                        <i class="iconfont icon-house"></i>
-                        <span>石窟寺及石刻</span>
-                        <i class="iconfont icon-gengduo1" style="float: right;"></i>
-                    </div>
-                    <ul id="shike"></ul>
-                </li>
-                <li class="submenu">
-                    <div class="submenu_header">
-                        <i class="iconfont icon-qita"></i>
-                        <span>其他</span>
-                        <i class="iconfont icon-gengduo1" style="float: right;"></i>
-                    </div>
-                    <ul id="qita"></ul>
-                </li>
-            </ul>
-        </div>
-    </div>
-
-    <div class="view" id="view">
-
+    <div class="aside" id="aside">
         <div id="toolbar">
             <button class="icon_button" id="zoom_in">
                 <i class="iconfont icon-Union-1"></i>
@@ -99,6 +43,62 @@
                 <i class="iconfont icon-ziyuanxhdpi"></i>
             </button>
         </div>
+
+        <div id="itemlist">
+            <ul style="list-style: none;">
+                <li class="submenu">
+                    <div class="submenu_header">
+                        <i class="iconfont icon-jianzhu"></i>
+                        <span>古建筑</span>
+                        <i class="iconfont icon-gengduo1" style="float: right;"></i>
+                    </div>
+                    <ul class="subul" id="gujianzhu"></ul>
+                </li>
+                <li class="submenu">
+                    <div class="submenu_header">
+                        <i class="iconfont icon-Halloween-"></i>
+                        <span>古墓葬</span>
+                        <i class="iconfont icon-gengduo1" style="float: right;"></i>
+                    </div>
+                    <ul class="subul" id="gumuzang"></ul>
+                </li>
+                <li class="submenu">
+                    <div class="submenu_header">
+                        <i class="iconfont icon-gongyuan"></i>
+                        <span>古遗址</span>
+                        <i class="iconfont icon-gengduo1" style="float: right;"></i>
+                    </div>
+                    <ul class="subul" id="guyizhi"></ul>
+                </li>
+                <li class="submenu">
+                    <div class="submenu_header">
+                        <i class="iconfont icon-tower-of-pisa"></i>
+                        <span>近现代重要史迹及代表性建筑</span>
+                        <i class="iconfont icon-gengduo1" style="float: right;"></i>
+                    </div>
+                    <ul class="subul" id="jindai"></ul>
+                </li>
+                <li class="submenu">
+                    <div class="submenu_header">
+                        <i class="iconfont icon-house"></i>
+                        <span>石窟寺及石刻</span>
+                        <i class="iconfont icon-gengduo1" style="float: right;"></i>
+                    </div>
+                    <ul class="subul" id="shike"></ul>
+                </li>
+                <li class="submenu">
+                    <div class="submenu_header">
+                        <i class="iconfont icon-qita"></i>
+                        <span>其他</span>
+                        <i class="iconfont icon-gengduo1" style="float: right;"></i>
+                    </div>
+                    <ul class="subul" id="qita"></ul>
+                </li>
+            </ul>
+        </div>
+    </div>
+
+    <div class="view" id="view">
         <div id="map_container"></div>
 
     </div>

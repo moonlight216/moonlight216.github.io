@@ -1,9 +1,9 @@
 import data from './data/proj.json' assert {type: 'json'}
 
-// TODO；初始化地图
+// TODO：初始化地图
 var map = L.map('map_container', {
     zoomControl: false
-}).setView([34.5, 119.0], 4)
+}).setView([34.5, 90.0], 4)
 
 L.tileLayer(
     'https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
@@ -16,15 +16,16 @@ L.tileLayer(
 }
 ).addTo(map)
 
-
-// TODO:根据TYPE类型分类添加到itemlist中
+function round(x) {
+    return Math.round(x * 100) / 100.
+}
+// TODO:根据TYPE类型分类添加到itemlist中,
 function addLi(ul_id, elmnt) {
     var li = document.createElement('li')
     li.className = "item"
-    function round(x) {
-        return Math.round(x * 100) / 100.
-    }
-    li.innerHTML = "名称:" + elmnt.NAME + "<br/>" + "位置:" + round(elmnt.LAT) + "°N," + round(elmnt.LON) + "°E"
+    li.id = "item_"+elmnt.FID
+    li.innerHTML = "<b>名称：</b>" + elmnt.NAME + "<br/>" +
+        "<b>地址：</b>" + elmnt.ADDRESS + "<br/>" + " <b>经纬度：</b>" + round(elmnt.LAT) + "°N," + round(elmnt.LON) + "°E"
     document.getElementById(ul_id).appendChild(li)
     li.onclick = () => {
         map.setView([elmnt.LAT, elmnt.LON], 16)
@@ -35,40 +36,64 @@ function addLi(ul_id, elmnt) {
 
 // TODO:间隔地给li上色
 
+function colordif(p,elmnt){
+    var item = document.getElementById("item_"+elmnt.FID)
+    if (p % 2 == 0) {
+        item.style.backgroundColor = "#e7e7e7"
+        item.onmouseover = () => {
+            item.style.backgroundColor = "rgb(179, 179, 179)"
+        }
+        item.onmouseout = () => {
+            item.style.backgroundColor = "#e7e7e7"
+        }
+    }
+    return ++p
+}
+var p=[0,0,0,0,0,0]
+
+// TODO：分类
 data.forEach(e => {
     const type = e.TYPE
     switch (type) {
         case "古建筑":
             addLi('gujianzhu', e)
+            p[0] = colordif(p[0],e)
             break
         case "古墓葬":
             addLi('gumuzang', e)
+            p[1] = colordif(p[1],e)
             break
         case "古遗址":
             addLi('guyizhi', e)
+            p[2] = colordif(p[2],e)
             break
         case "近现代重要史迹及代表性建筑":
             addLi('jindai', e)
+            p[3] = colordif(p[3],e)
             break
         case "石窟寺及石刻":
             addLi('shike', e)
+            p[4] = colordif(p[4],e)
             break
         case "其他":
             addLi('qita', e)
+            p[5] = colordif(p[5],e)
             break
     }
 })
 
-// TODO: 伸缩ul
+// TODO: 伸缩ul,添加选中颜色
 $(function () {
     $('.submenu_header').click(function () {
+        $(".submenu_header_active").attr('class','submenu_header')
+        $(this).attr('class','submenu_header_active')
         $(this).next().slideToggle().siblings('ul').slideUp(100);
     })
 })
 
-// TODO：div-toolbar可拖动
+// TODO：div-toolbar可拖动(拖动范围)
 var toolbar = document.getElementById(("toolbar"))
-var view = document.getElementById("view")
+var aside = document.getElementById('aside')
 
 dragElement(toolbar);
 
@@ -93,8 +118,8 @@ function dragElement(elmnt) {
         pos3 = e.clientX;
         pos4 = e.clientY;
 
-        elmnt.style.top = (elmnt.offsetTop - pos2) + "px";
-        elmnt.style.left = (elmnt.offsetLeft - pos1) + "px";
+        aside.style.top = (aside.offsetTop - pos2) + "px";
+        aside.style.left = (aside.offsetLeft - pos1) + "px";
     }
 
     function closeDragElement() {
@@ -121,7 +146,9 @@ data.forEach(item => {
     var marker = L.marker([item.LAT, item.LON],
         {
             title: item.NAME
-        }).bindPopup(item.NAME)
+        }).bindPopup("<b>名称：</b>" + item.NAME + "<br/>" +
+            "<b>地址：</b>" + item.ADDRESS + "<br/>" + " <b>经纬度：</b>" + round(item.LAT) + "°N," + round(item.LON) + "°E" + "<br/>" +
+            "<b>文物类型：</b>" + item.TYPE + "<br/>" + "<b> 批次：</b>" + item.BATCH + "<br/>" + "<b> 时代：</b>" + item.AGE)
 
     marksLayer.addLayer(marker)
     markers.set(item.FID, marker)
@@ -129,7 +156,7 @@ data.forEach(item => {
 
 map.addLayer(marksLayer)
 
-// TODO； 处理onclick事件
+// TODO： 处理onclick事件
 var zoomin = document.getElementById('zoom_in')
 zoomin.onclick = () => map.zoomIn(1)
 
