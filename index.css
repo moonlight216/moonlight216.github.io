@@ -50,6 +50,7 @@ body {
     max-height: 10%;
     display: none;
     background-color: rgb(244, 244, 244);
+    user-select: none;
 }
 
 #searchresult {
@@ -58,6 +59,12 @@ body {
 }
 
 .searchdiv {
+    padding: 10px 10px;
+    display: none;
+    background-color: rgb(244, 244, 244);
+}
+
+.layerdiv {
     padding: 10px 10px;
     display: none;
     background-color: rgb(244, 244, 244);

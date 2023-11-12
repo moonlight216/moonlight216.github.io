@@ -5,16 +5,28 @@ var map = L.map('map_container', {
     zoomControl: false
 }).setView([34.5, 90.0], 4)
 
-L.tileLayer(
-    'https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
-    attribution: '@osm',
+/*
+L.layerGroup([
+    L.tileLayer('http://t{s}.tianditu.gov.cn/vec_w/wmts?SERVICE=WMTS&REQUEST=GetTile&VERSION=1.0.0&LAYER=vec&STYLE=default&TILEMATRIXSET=w&FORMAT=tiles&TILECOL={x}&TILEROW={y}&TILEMATRIX={z}&tk=0d84cf377db65d8f1af3b5f808876abe', { subdomains: ['0', '1', '2', '3', '4', '5', '6', '7'] }),
+    L.tileLayer('http://t{s}.tianditu.gov.cn/cva_w/wmts?SERVICE=WMTS&REQUEST=GetTile&VERSION=1.0.0&LAYER=cva&STYLE=default&TILEMATRIXSET=w&FORMAT=tiles&TILECOL={x}&TILEROW={y}&TILEMATRIX={z}&tk=0d84cf377db65d8f1af3b5f808876abe', { subdomains: ['0', '1', '2', '3', '4', '5', '6', '7'] })
+], {
+    attribution: '天地图',
     minNativeZoom: 4,
     maxNativeZoom: 18,
     minZoom: 4,
     maxZoom: 18,
     preferCanvas: true
-}
-).addTo(map)
+}).addTo(map)
+*/
+
+L.tileLayer('http://rt0.map.gtimg.com/realtimerender?z={z}&x={x}&y={-y}&type=vector&style=0',{
+    attribution: '天地图',
+    minNativeZoom: 4,
+    maxNativeZoom: 18,
+    minZoom: 4,
+    maxZoom: 18,
+    preferCanvas: true
+}).addTo(map)
 
 function round(x) {
     return Math.round(x * 100) / 100.
@@ -196,12 +208,6 @@ var marksLayer = L.markerClusterGroup()
 
 const markers = new Map()
 
-var icon = L.icon({
-    iconUrl: 'image/markers.png',
-    iconSize: [20, 18],
-    iconAnchor: [10, 9]
-});
-
 data.forEach(item => {
     var marker = L.marker([item.LAT, item.LON],
         {
@@ -218,7 +224,7 @@ map.addLayer(marksLayer)
 
 // TODO： 处理onclick事件
 var zoomin = document.getElementById('zoom_in')
-zoomin.onclick = () => map.zoomIn(1)
+zoomin.onclick = () => { map.zoomIn(1);console.log(map.getZoom()) }
 
 var zoomout = document.getElementById('zoom_out')
 zoomout.onclick = () => map.zoomOut(1)
@@ -230,14 +236,16 @@ full.onclick = () => map.setView([34.5, 90.0], 4)
 var itemlist = document.getElementById('itemlist');
 var infopage = document.getElementById('infopage');
 var filter = document.getElementById('filter')
-var info = document.getElementById('info')
 var searchdiv = document.getElementById('searchdiv')
+var layerdiv = document.getElementById('layerdiv')
 
+var info = document.getElementById('info')
 info.onclick = () => {
     if (infopage.style.display !== 'block') {
         itemlist.style.display = 'none'
         searchdiv.style.display = 'none'
         filter.style.display = 'none'
+        layerdiv.style.display = 'none'
         infopage.style.display = 'block'
     }
 }
@@ -249,6 +257,7 @@ home.onclick = () => {
         filter.style.display = 'block'
         searchdiv.style.display = 'none'
         infopage.style.display = 'none'
+        layerdiv.style.display = 'none'
     }
 }
 
@@ -269,25 +278,85 @@ search.onclick = () => {
             addLi('searchresult', e)
             p1 = colordif(p1, e)
         })
-        //如果结果数为0
+
         var lis = searchresult.getElementsByTagName('li');
         var searchcount = document.getElementById('searchcount')
         if (lis.length != 0) {
             searchcount.innerHTML = "共有 " + lis.length + " 条结果"
+        } else {
+            searchcount.innerHTML = "无符合搜索条件的结果"
         }
 
         if (searchdiv.style.display !== 'block') {
             itemlist.style.display = 'none'
             infopage.style.display = 'none'
             filter.style.display = 'none'
+            layerdiv.style.display = 'none'
             searchdiv.style.display = 'block'
         }
     }
+}
 
-
+var layers = document.getElementById('layers')
+layers.onclick = () => {
+    if (layerdiv.style.display !== 'block') {
+        itemlist.style.display = 'none'
+        searchdiv.style.display = 'none'
+        filter.style.display = 'none'
+        infopage.style.display = 'none'
+        layerdiv.style.display = 'block'
+    }
 }
 
 // TODO:图层切换
 //天地图:http://t2.tianditu.gov.cn/vec_w/wmts?SERVICE=WMTS&REQUEST=GetTile&VERSION=1.0.0&LAYER=vec&STYLE=default&TILEMATRIXSET=w&FORMAT=tiles&TILEMATRIX={z}&TILEROW={y}&TILECOL={x}&tk=0d84cf377db65d8f1af3b5f808876abe
 //OSM:https://tile.openstreetmap.org/{z}/{x}/{y}.png
-//Arcgis地形图:https://server.arcgisonline.com/arcgis/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}
+//Arcgis遥感图:https://server.arcgisonline.com/arcgis/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}
+
+// 定义底图图层
+var txLayer = L.tileLayer('http://rt0.map.gtimg.com/realtimerender?z={z}&x={x}&y={-y}&type=vector&style=0', {
+    attribution: '腾讯地图'
+});
+
+var amapLayer = L.tileLayer('http://wprd04.is.autonavi.com/appmaptile?lang=zh_cn&size=1&style=7&x={x}&y={y}&z={z}', {
+    attribution: '高德地图'
+});
+
+var tiandituLayer = L.layerGroup([
+    L.tileLayer('http://t{s}.tianditu.gov.cn/vec_w/wmts?SERVICE=WMTS&REQUEST=GetTile&VERSION=1.0.0&LAYER=vec&STYLE=default&TILEMATRIXSET=w&FORMAT=tiles&TILECOL={x}&TILEROW={y}&TILEMATRIX={z}&tk=0d84cf377db65d8f1af3b5f808876abe', { subdomains: ['0', '1', '2', '3', '4', '5', '6', '7'] }),
+    L.tileLayer('http://t{s}.tianditu.gov.cn/cva_w/wmts?SERVICE=WMTS&REQUEST=GetTile&VERSION=1.0.0&LAYER=cva&STYLE=default&TILEMATRIXSET=w&FORMAT=tiles&TILECOL={x}&TILEROW={y}&TILEMATRIX={z}&tk=0d84cf377db65d8f1af3b5f808876abe', { subdomains: ['0', '1', '2', '3', '4', '5', '6', '7'] })
+], {
+    attribution: '天地图'
+})
+
+var osmLayer = L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
+    attribution: 'OSM'
+});
+
+var arcgisLayer = L.tileLayer('https://server.arcgisonline.com/arcgis/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}', {
+    attribution: 'ArcGIS'
+});
+
+var googleLayer = L.tileLayer('https://mt1.google.com/vt/lyrs=m&x={x}&y={y}&z={z}', {
+    attribution: 'Google Maps'
+});
+
+// 创建底图图层组
+var basemaps = {
+    "tx": txLayer,
+    "amap": amapLayer,
+    "tianditu": tiandituLayer,
+    "osm": osmLayer,
+    "arcgis": arcgisLayer,
+    "google": googleLayer
+};
+
+// 添加底图切换事件
+document.getElementById('basemaps').addEventListener('click', e => {
+    var basemap = e.target.getAttribute('data-basemap')
+    if (basemaps[basemap]) {
+        map.eachLayer(layer => { map.removeLayer(layer) })
+        basemaps[basemap].addTo(map)
+        map.addLayer(marksLayer)
+    }
+});
