@@ -75,37 +75,47 @@ buttonfilter.onclick = () => {
         }
     }
 
-
     // TODO：分类
+    var count = [0, 0, 0, 0, 0, 0]
     filteredData.forEach(e => {
         const type = e.TYPE
         switch (type) {
             case "古建筑":
                 addLi('gujianzhu', e)
                 p[0] = colordif(p[0], e)
+                count[0]++
                 break
             case "古墓葬":
                 addLi('gumuzang', e)
                 p[1] = colordif(p[1], e)
+                count[1]++
                 break
             case "古遗址":
                 addLi('guyizhi', e)
                 p[2] = colordif(p[2], e)
+                count[2]++
                 break
             case "近现代重要史迹及代表性建筑":
                 addLi('jindai', e)
                 p[3] = colordif(p[3], e)
+                count[3]++
                 break
             case "石窟寺及石刻":
                 addLi('shike', e)
                 p[4] = colordif(p[4], e)
+                count[4]++
                 break
             case "其他":
                 addLi('qita', e)
                 p[5] = colordif(p[5], e)
+                count[5]++
                 break
         }
     })
+    var countspans = document.getElementsByClassName("count")
+    for (var j = 0; j < countspans.length; j++) {
+        countspans[j].innerHTML = "(" + count[j] + ")"
+    }
 }
 // TODO: 添加数据到filter内
 
@@ -139,8 +149,9 @@ $(function () {
 })
 
 // TODO：div-toolbar可拖动(拖动范围)
-var toolbar = document.getElementById(("toolbar"))
+var toolbar = document.getElementById("toolbar")
 var aside = document.getElementById('aside')
+var searchInput = document.getElementById('search-input')
 
 dragElement(toolbar);
 
@@ -153,6 +164,10 @@ function dragElement(elmnt) {
     }
 
     function dragMouseDown(e) {
+        // 检查鼠标点击的位置是否在search-input内
+        if (e.target === searchInput || searchInput.contains(e.target)) {
+            return;
+        }
         pos3 = e.clientX;
         pos4 = e.clientY;
         document.onmouseup = closeDragElement;
@@ -174,8 +189,6 @@ function dragElement(elmnt) {
         document.onmousemove = null;
     }
 }
-
-
 
 // TODO:添加markers
 
@@ -211,7 +224,68 @@ var zoomout = document.getElementById('zoom_out')
 zoomout.onclick = () => map.zoomOut(1)
 
 var full = document.getElementById('full')
-full.onclick = () => map.setView([34.5, 119.0], 4)
+full.onclick = () => map.setView([34.5, 90.0], 4)
+
+
+var itemlist = document.getElementById('itemlist');
+var infopage = document.getElementById('infopage');
+var filter = document.getElementById('filter')
+var info = document.getElementById('info')
+var searchdiv = document.getElementById('searchdiv')
+
+info.onclick = () => {
+    if (infopage.style.display !== 'block') {
+        itemlist.style.display = 'none'
+        searchdiv.style.display = 'none'
+        filter.style.display = 'none'
+        infopage.style.display = 'block'
+    }
+}
+
+var home = document.getElementById('home')
+home.onclick = () => {
+    if (itemlist.style.display !== 'block') {
+        itemlist.style.display = 'block'
+        filter.style.display = 'block'
+        searchdiv.style.display = 'none'
+        infopage.style.display = 'none'
+    }
+}
+
+var search = document.getElementById('search')
+search.onclick = () => {
+    const text = document.getElementById('search-input').value
+    if (text !== "") {
+        const result = data.filter(e => {
+            return e.NAME.includes(text)
+        })
+
+        var searchresult = document.getElementById('searchresult')
+        while (searchresult.firstChild) {
+            searchresult.removeChild(searchresult.firstChild)
+        }
+        var p1 = 0 //计数指针
+        result.forEach(e => {
+            addLi('searchresult', e)
+            p1 = colordif(p1, e)
+        })
+        //如果结果数为0
+        var lis = searchresult.getElementsByTagName('li');
+        var searchcount = document.getElementById('searchcount')
+        if (lis.length != 0) {
+            searchcount.innerHTML = "共有 " + lis.length + " 条结果"
+        }
+
+        if (searchdiv.style.display !== 'block') {
+            itemlist.style.display = 'none'
+            infopage.style.display = 'none'
+            filter.style.display = 'none'
+            searchdiv.style.display = 'block'
+        }
+    }
+
+
+}
 
 // TODO:图层切换
 //天地图:http://t2.tianditu.gov.cn/vec_w/wmts?SERVICE=WMTS&REQUEST=GetTile&VERSION=1.0.0&LAYER=vec&STYLE=default&TILEMATRIXSET=w&FORMAT=tiles&TILEMATRIX={z}&TILEROW={y}&TILECOL={x}&tk=0d84cf377db65d8f1af3b5f808876abe

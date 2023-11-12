@@ -27,6 +27,7 @@ body {
     user-select: none;
     height: 60px;
     line-height: 60px;
+    overflow: hidden;
 }
 
 /*滚动方式*/
@@ -36,11 +37,30 @@ body {
 
 .subul {
     max-height: 300px;
-    overflow-y: scroll;
+    overflow-y: auto;
 }
+
 
 .itemlist {
     max-height: 10%;
+}
+
+.infopage {
+    padding: 15px 2em;
+    max-height: 10%;
+    display: none;
+    background-color: rgb(244, 244, 244);
+}
+
+#searchresult {
+    max-height: 300px;
+    overflow-y: auto;
+}
+
+.searchdiv {
+    padding: 10px 10px;
+    display: none;
+    background-color: rgb(244, 244, 244);
 }
 
 /*滚动条样式*/
@@ -54,7 +74,7 @@ body {
 }
 
 *::-webkit-scrollbar-track {
-    background-color: #ffffff;
+    background-color: #eaeaea;
 }
 
 .submenu_header_active {
@@ -63,6 +83,7 @@ body {
     user-select: none;
     height: 60px;
     line-height: 60px;
+    overflow: hidden;
 }
 
 .submenu>ul {
@@ -108,7 +129,9 @@ body {
 }
 
 #toolbar {
-    display: block;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
     padding: 10px;
     background-color: rgb(122, 203, 245);
     user-select: none;
@@ -128,20 +151,21 @@ body {
 .filter {
     padding: 1em;
     display: block;
-    line-height: 50px;
+    line-height: 30px;
     background-color: rgb(246, 186, 184);
     user-select: none;
 }
 
 
 #buttonfilter {
+    padding: 2px 5px;
     background-color: rgb(255, 255, 255);
     border: none;
     color: rgb(0, 0, 0);
     cursor: pointer;
-    height: 35px;
-    width: 35px;
-    border-radius: 50%;
+    height: 30px;
+    width: 70px;
+    border-radius: 15px;
 }
 
 .select {
@@ -154,4 +178,27 @@ body {
     font-size: 15px;
     border-radius: 4px;
     color: #000000;
+}
+
+#search-box {
+    display: flex;
+    align-items: center;
+}
+
+#search-input {
+    padding: 8px;
+    border: none;
+    border-top-left-radius: 4px;
+    border-bottom-left-radius: 4px;
+    width: 95px;
+}
+
+#search {
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    padding: 8px 12px;
+    border-top-right-radius: 4px;
+    border-bottom-right-radius: 4px;
+    cursor: pointer;
 }

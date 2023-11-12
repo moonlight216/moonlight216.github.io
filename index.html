@@ -5,8 +5,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
 
-    <title>全国文物保护单位Map</title>
-
+    <title>全国文物保护单位地图</title>
+    <link rel="icon" href="./image/icon.png">
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
         integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin="" />
     <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
@@ -24,24 +24,30 @@
 <body>
     <div class="aside" id="aside">
         <div id="toolbar">
-            <button class="icon_button" id="zoom_in">
-                <i class="iconfont icon-Union-1"></i>
-            </button>
-            <button class="icon_button" id="zoom_out">
-                <i class="iconfont icon-Union-2"></i>
-            </button>
-            <button class="icon_button" id="full">
-                <i class="iconfont icon-ditu"></i>
-            </button>
-            <button class="icon_button" id="layers">
-                <i class="iconfont icon-Union-4"></i>
-            </button>
-            <button class="icon_button" id="reflesh">
-                <i class="iconfont icon-Vector-11"></i>
-            </button>
-            <button class="icon_button" id="more">
-                <i class="iconfont icon-ziyuanxhdpi"></i>
-            </button>
+            <div id="button-box">
+                <button class="icon_button" id="home">
+                    <i class="iconfont icon-zhuye"></i>
+                </button>
+                <button class="icon_button" id="zoom_in">
+                    <i class="iconfont icon-Union-1"></i>
+                </button>
+                <button class="icon_button" id="zoom_out">
+                    <i class="iconfont icon-Union-2"></i>
+                </button>
+                <button class="icon_button" id="full">
+                    <i class="iconfont icon-ditu"></i>
+                </button>
+                <button class="icon_button" id="layers">
+                    <i class="iconfont icon-Union-4"></i>
+                </button>
+                <button class="icon_button" id="info">
+                    <i class="iconfont icon-ziyuanxhdpi"></i>
+                </button>
+            </div>
+            <div id="search-box">
+                <input type="text" id="search-input" placeholder="名称...">
+                <button id="search">搜索</button>
+            </div>
         </div>
 
         <div class="filter" id="filter">
@@ -63,9 +69,9 @@
                 <option value="第七批">第七批</option>
                 <option value="第八批">第八批</option>
             </select>
-            <span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
+
             <button class="icon_button" id="buttonfilter">
-                <i class="iconfont icon-sousuo"></i>
+                <i class="iconfont icon-sousuo">检索</i>
             </button>
         </div>
 
@@ -75,6 +81,7 @@
                     <div class="submenu_header">
                         <i class="iconfont icon-jianzhu"></i>
                         <span>古建筑</span>
+                        <span class="count">(0)</span>
                         <i class="iconfont icon-gengduo1" style="float: right;"></i>
                     </div>
                     <ul class="subul" id="gujianzhu"></ul>
@@ -83,6 +90,7 @@
                     <div class="submenu_header">
                         <i class="iconfont icon-Halloween-"></i>
                         <span>古墓葬</span>
+                        <span class="count">(0)</span>
                         <i class="iconfont icon-gengduo1" style="float: right;"></i>
                     </div>
                     <ul class="subul" id="gumuzang"></ul>
@@ -91,6 +99,7 @@
                     <div class="submenu_header">
                         <i class="iconfont icon-gongyuan"></i>
                         <span>古遗址</span>
+                        <span class="count">(0)</span>
                         <i class="iconfont icon-gengduo1" style="float: right;"></i>
                     </div>
                     <ul class="subul" id="guyizhi"></ul>
@@ -99,6 +108,7 @@
                     <div class="submenu_header">
                         <i class="iconfont icon-tower-of-pisa"></i>
                         <span>近现代重要史迹及代表性建筑</span>
+                        <span class="count">(0)</span>
                         <i class="iconfont icon-gengduo1" style="float: right;"></i>
                     </div>
                     <ul class="subul" id="jindai"></ul>
@@ -107,6 +117,7 @@
                     <div class="submenu_header">
                         <i class="iconfont icon-house"></i>
                         <span>石窟寺及石刻</span>
+                        <span class="count">(0)</span>
                         <i class="iconfont icon-gengduo1" style="float: right;"></i>
                     </div>
                     <ul class="subul" id="shike"></ul>
@@ -115,11 +126,60 @@
                     <div class="submenu_header">
                         <i class="iconfont icon-qita"></i>
                         <span>其他</span>
+                        <span class="count">(0)</span>
                         <i class="iconfont icon-gengduo1" style="float: right;"></i>
                     </div>
                     <ul class="subul" id="qita"></ul>
                 </li>
             </ul>
+        </div>
+        <div class="infopage" id="infopage">
+            <h1><em><strong>全国重点文物保护单位地图</strong></em></h1>
+            <hr />
+            <h2><strong>数据源：</strong></h2>
+            <div style="padding: 0 1em;">
+                <ol class="ol-list" start="">
+                    <li class="md-list-item">
+                        <p class="md-end-block md-p"><span class="md-meta-i-c md-link md-expand"><a
+                                    href="https://mp.weixin.qq.com/s/Rf9V-mOu3B8lu93F1unVgg"><span
+                                        class="md-plain">立方数据学社-全国重点文物保护单位数据</span></a></span></p>
+                    </li>
+                    <li class="md-list-item md-focus-container">
+                        <p class="md-end-block md-p md-focus"><span class="md-meta-i-c md-link md-expand"><a
+                                    href="http://gl.ncha.gov.cn/#/public-service"><span
+                                        class="md-plain">全国一体化在线政务平台（国家文物局综合行政管理平台）</span></a></span></p>
+                    </li>
+                </ol>
+            </div>
+            <br />
+            <h2><strong><span class="md-meta-i-c md-link md-expand"><span class="md-plain">插件：</span></span></strong>
+            </h2>
+            <div style="padding: 0 1em;">
+                <ol class="ol-list" start="">
+                    <li class="md-list-item md-focus-container">
+                        <p class="md-end-block md-p md-focus"><span class="md-meta-i-c md-link md-expand"><a
+                                    href="https://leafletjs.com/"><span class="md-plain">Leaflet</span></a></span></p>
+                    </li>
+                    <li class="md-list-item">
+                        <p class="md-end-block md-p"><span class="md-meta-i-c md-link"><a
+                                    href="https://jquery.com/"><span class="md-plain">jQuery</span></a></span></p>
+                    </li>
+                    <li class="md-list-item">
+                        <p class="md-end-block md-p"><span class="md-meta-i-c md-link"><a class=""
+                                    href="https://github.com/Leaflet/Leaflet.markercluster"><span
+                                        class="md-plain">marker-cluster</span></a></span></p>
+                    </li>
+                </ol>
+            </div>
+            <hr />
+            <p style="text-align: right;"><span class="md-meta-i-c md-link"><span class="md-plain">by MoonLight216 on
+                        11/12/2023</span></span></p>
+        </div>
+        <div class="searchdiv" id="searchdiv">
+            <span><b>搜索结果</b></span>
+            <ul id="searchresult"></ul>
+            <div id="hasnone" style="display: flex;justify-content: center;align-items: center;"><span
+                    id="searchcount">无符合搜索条件的结果</span></div>
         </div>
     </div>
 
