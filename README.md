@@ -1,8 +1,8 @@
 # *全国重点文物保护单位地图*
 
-## Github仓库
+## Github仓库/GitHub Pages
 
-[➡仓库链接](https://github.com/moonlight216/moonlight216.github.io)
+[➡仓库链接](https://github.com/moonlight216/moonlight216.github.io)  ➡[GitHub Pages](https://moonlight216.github.io/)
 
 ## 数据源
 
@@ -20,7 +20,7 @@
 
 ### 0.总结
 
-①整体界面美观简洁，注意细节，对大部分用户操作结果都进行了平滑过渡。
+①整体界面美观简洁，对许多操作都设置了平滑过渡动画。
 
 ②实现了搜索、过滤数据、切换数据源等功能，并对结果进行分类和数量统计。
 
