@@ -9,7 +9,7 @@ var map = L.map('map_container', {
     maxZoom: 18
 }).setView([34.5, 90.0], 4)
 
-map.attributionControl.setPrefix('<img src="./image/icon.png"><a href="https://github.com/moonlight216/moonlight216.github.io">Home</a>')
+map.attributionControl.setPrefix('<a href="https://leafletjs.com/">Leaflet</a> | <a href="https://github.com/moonlight216/moonlight216.github.io">Home</a>')
 
 L.layerGroup([
     L.tileLayer('http://t{s}.tianditu.gov.cn/vec_w/wmts?SERVICE=WMTS&REQUEST=GetTile&VERSION=1.0.0&LAYER=vec&STYLE=default&TILEMATRIXSET=w&FORMAT=tiles&TILECOL={x}&TILEROW={y}&TILEMATRIX={z}&tk=0d84cf377db65d8f1af3b5f808876abe', { subdomains: ['0', '1', '2', '3', '4', '5', '6', '7'] }),
