@@ -102,7 +102,7 @@
 
 ### 6.更多信息展示
 
-点击Toolbar上的<img src="E:/mdpic/image-20231113165839417.png" alt="image-20231113165839417" style="zoom:60%;" />可以切换到更多信息的页面，展示了数据源和所用插件的列表。如图(8)所示。
+点击Toolbar上的<img src="image/image-20231113165839417.png" alt="image-20231113165839417" style="zoom:60%;" />可以切换到更多信息的页面，展示了数据源和所用插件的列表。如图(8)所示。
 
 <img src="image/image-20231113165759568.png" alt="image-20231113165759568" style="zoom:50%;" />
 
