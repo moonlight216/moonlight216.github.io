@@ -2,30 +2,20 @@ import data from './data/proj.json' assert {type: 'json'}
 
 // TODO：初始化地图
 var map = L.map('map_container', {
-    zoomControl: false
+    zoomControl: false,
+    minNativeZoom: 4,
+    maxNativeZoom: 18,
+    minZoom: 4,
+    maxZoom: 18
 }).setView([34.5, 90.0], 4)
 
-/*
+map.attributionControl.setPrefix('<img src="./image/icon.png"><a href="https://github.com/moonlight216/moonlight216.github.io">Home</a>')
+
 L.layerGroup([
     L.tileLayer('http://t{s}.tianditu.gov.cn/vec_w/wmts?SERVICE=WMTS&REQUEST=GetTile&VERSION=1.0.0&LAYER=vec&STYLE=default&TILEMATRIXSET=w&FORMAT=tiles&TILECOL={x}&TILEROW={y}&TILEMATRIX={z}&tk=0d84cf377db65d8f1af3b5f808876abe', { subdomains: ['0', '1', '2', '3', '4', '5', '6', '7'] }),
     L.tileLayer('http://t{s}.tianditu.gov.cn/cva_w/wmts?SERVICE=WMTS&REQUEST=GetTile&VERSION=1.0.0&LAYER=cva&STYLE=default&TILEMATRIXSET=w&FORMAT=tiles&TILECOL={x}&TILEROW={y}&TILEMATRIX={z}&tk=0d84cf377db65d8f1af3b5f808876abe', { subdomains: ['0', '1', '2', '3', '4', '5', '6', '7'] })
 ], {
     attribution: '天地图',
-    minNativeZoom: 4,
-    maxNativeZoom: 18,
-    minZoom: 4,
-    maxZoom: 18,
-    preferCanvas: true
-}).addTo(map)
-*/
-
-L.tileLayer('http://rt0.map.gtimg.com/realtimerender?z={z}&x={x}&y={-y}&type=vector&style=0',{
-    attribution: '天地图',
-    minNativeZoom: 4,
-    maxNativeZoom: 18,
-    minZoom: 4,
-    maxZoom: 18,
-    preferCanvas: true
 }).addTo(map)
 
 function round(x) {
@@ -224,9 +214,12 @@ map.addLayer(marksLayer)
 
 // TODO： 处理onclick事件
 var zoomin = document.getElementById('zoom_in')
-zoomin.onclick = () => { map.zoomIn(1);console.log(map.getZoom()) }
+
+zoomin.onclick = () => map.zoomIn(1);
 
 var zoomout = document.getElementById('zoom_out')
+zoomout.disabled = true;
+zoomout.style.backgroundColor = "rgb(227,227,227)"
 zoomout.onclick = () => map.zoomOut(1)
 
 var full = document.getElementById('full')
@@ -307,6 +300,25 @@ layers.onclick = () => {
         layerdiv.style.display = 'block'
     }
 }
+
+// TODO:按钮可用性设置
+map.on('zoom', function () {
+    var zoomLevel = map.getZoom();
+    if (zoomLevel <= 4) {
+        zoomout.disabled = true;
+        zoomout.style.backgroundColor = "rgb(227,227,227)"
+    } else {
+        zoomout.disabled = false;
+        zoomout.style.backgroundColor = "rgb(255,255,255)"
+    }
+    if (zoomLevel >= 18) {
+        zoomin.disabled = true;
+        zoomin.style.backgroundColor = "rgb(227,227,227)"
+    } else {
+        zoomin.disabled = false;
+        zoomin.style.backgroundColor = "rgb(255,255,255)"
+    }
+});
 
 // TODO:图层切换
 //天地图:http://t2.tianditu.gov.cn/vec_w/wmts?SERVICE=WMTS&REQUEST=GetTile&VERSION=1.0.0&LAYER=vec&STYLE=default&TILEMATRIXSET=w&FORMAT=tiles&TILEMATRIX={z}&TILEROW={y}&TILECOL={x}&tk=0d84cf377db65d8f1af3b5f808876abe
