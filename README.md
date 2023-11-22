@@ -2,7 +2,7 @@
 
 ## Github仓库/GitHub Pages
 
-[➡仓库链接](https://github.com/moonlight216/moonlight216.github.io)  ➡[GitHub Pages](https://moonlight216.github.io/)
+[➡仓库链接](https://github.com/moonlight216/moonlight216.github.io)  ➡[网页预览](https://moonlight216.github.io/)
 
 ## 数据源
 
